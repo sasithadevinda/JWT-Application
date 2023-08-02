@@ -3,6 +3,7 @@ package com.example.JWT.controller.auth;
 import com.example.JWT.auth.AuthRequest;
 import com.example.JWT.auth.AuthResponse;
 import com.example.JWT.entity.User;
+import com.example.JWT.jwt.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,8 @@ public class AuthController {
 
     @Autowired
     AuthenticationManager authenticationManager;
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
 
     @PostMapping("/auth/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
@@ -27,7 +30,7 @@ public class AuthController {
             Authentication authenticate =
                     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getEmail(),authRequest.getPassword()));
          User user=   (User) authenticate.getPrincipal();
-         String accessToken ="qqqq";
+         String accessToken = jwtTokenUtil.generateAccessToken(user);
          AuthResponse authResponse= new AuthResponse(user.getEmail(), accessToken);
          return ResponseEntity.ok(authResponse);
 
