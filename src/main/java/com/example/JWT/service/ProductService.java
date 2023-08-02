@@ -13,7 +13,7 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
     public List<Product> productList(){
-     return  productRepository.findAll();
+           return  productRepository.findAll();
     }
 
     public ResponseEntity<Product> addProduct(Product product){
